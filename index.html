@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Pollo Locco</title>
+    <link rel="icon" href="icons/favicon/mariachi_10905390.png" type="image/x-icon">
+    <link rel="stylesheet" href="fonts/font.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="assets/images.canvas.js" defer></script>
+    <script src="models/drawable-object.class.js"></script>
+    <script src="models/sounds.class.js" defer></script>
+    <script src="models/background-object.class.js" defer></script>
+    <script src="models/movable-object.class.js" defer></script>
+    <script src="models/character.class.js" defer></script>
+    <script src="models/little-chicken.class.js" defer></script>
+    <script src="models/chicken.class.js" defer></script>
+    <script src="models/endboss.class.js" defer></script>
+    <script src="models/health-statusbar-endboss.class.js" defer></script>
+    <script src="models/clouds.class.js" defer></script>
+    <script src="models/bottle.class.js" defer></script>
+    <script src="models/throwable-object.class.js" defer></script>
+    <script src="models/coin.class.js" defer></script>
+    <script src="models/level.class.js" defer></script>
+    <script src="models/world.class.js" defer></script>
+    <script src="models/bottle-statusbar.class.js" defer></script>
+    <script src="levels/level1.js" defer></script>
+    <script src="models/health-statusbar.class.js" defer></script>
+    <script src="models/coin-statusbar.class.js" defer></script>
+    <script src="models/keyboard.class.js" defer></script>
+    <script src="js/game.js" defer></script>
+</head>
+
+<body id="body" onload="turnDevice()" onclick="closeInstructions(event)">
+    <div id="h1-plus-content" onclick="closeInstructions(event)">
+        <h1>El Pollo Locco</h1>
+        <div id="content" class="content">
+            <div id="turn-device-overlay" class="d-none">
+                <img class="turn-phone-img" src="icons/rotate-device/rotate-phone.png">
+            </div>
+            <div id="game-loading-ct" class="game-loading-ct">
+                <span id="loading-text">Loading Locco World</span>
+            </div>
+            <button onclick="stopIntervals()">Stop Intervals</button>
+            <canvas id="canvas" width="780" height="480">
+            </canvas>
+            <div id="startscreen-container" class="startscreen-container">
+                <img id="onload-screen-image" class="onload-screen-image"
+                    src="img/9_intro_outro_screens/start/startscreen_1.png">
+                <img onclick="letsPlay(); hideStartScreen();" id="press-play-icon" src="icons/pressPlay/play.png"
+                    class="press-play-icon">
+                <audio id="audio" style="display:none" src="audio/lets-go.mp3"></audio>
+            </div>
+            <div id="icon-container" class="icon-container">
+                <img id="audio-icon" onclick="toggleAudio()" class="top-icon" src="icons/audio-icons/audio-remove.svg">
+                <img id="instructions" class="top-icon" onclick="showInstructions()"
+                    src="icons/instructions/instructions.png">
+                <audio id="br-music" style="display:none" src="audio/background-music.mp3"></audio>
+                <img onclick="toggleFullScreen()" id="fullscreen" class="full-screen"
+                    src="icons/full-screen/full-screen.svg">
+            </div>
+            <div id="instruction-container" class="instruction-container d-none">
+                <div id="ht-walk" class="flex-row">
+                    <div id="left-right-arr-container">
+                        <img class="img" src="icons/instructions/arrow-left.png">
+                        <img class="img" src="icons/instructions/arrow-right.png">
+                    </div>
+                    <p>how to walk</p>
+                </div>
+                <div id="ht-jump" class="flex-row">
+                    <img class="img" src="icons/instructions/arrow-up.png">
+                    <p>how to jump</p>
+                </div>
+                <div id="ht-throw" class="flex-row">
+                    <img class="img" src="icons/instructions/d-key.png">
+                    <p>how to throw</p>
+                </div>
+                <div id="lg-loco" class="flex-row">
+                    <div id="go-loco-imgs" class="go-loco-imgs">
+                        <img class="img" src="img/2_character_pepe/3_jump/J-36.png">
+                        <img onclick="backToPlayScreen()" class="img cp" src="icons/instructions/go-back.png">
+                    </div>
+                    <p>lets go locco!</p>
+                </div>
+            </div>
+            <div id="game-finished-container" class="game-finished-container d-none">
+                <img id="restart-btn" onclick="restartGame()" class="restart-btn"
+                    src="icons/pressPlay/restart-button.png">
+                <img id="quit-btn" onclick="quitEndscreen()" class="quit-btn" src="icons/pressPlay/quit.png">
+                <img id="game-over-img" class="game-over-img d-none"
+                    src="img/9_intro_outro_screens/game_over/game over!.png">
+                <img id="game-over-lost-img" class="game-over-img d-none"
+                    src="img/9_intro_outro_screens/game_over/you lost.png">
+                <img id="endscreen-img" class="endscreen-img" src="img/5_background/second_half_background.png">
+            </div>
+            <div id="responsive-button-set" class="responsive-button-set d-none">
+                <div class="responsive-walking">
+                    <img id="btn-left" class="img-resp cp" src="icons/responsive-btns/left-walk.png">
+                    <img id="btn-right" class="img-resp cp" src="icons/responsive-btns/right-walk.png" alt="">
+                </div>
+                <div id="responsive-throw-jump" class="responsive-throw-jump">
+                    <img id="btn-jump" class="img-resp cp" src="icons/responsive-btns/jump-btn.png">
+                    <img id="btn-throw" class="img-resp responsive-btn-bottle cp"
+                        src="icons/responsive-btns/throw-btn.png">
+                </div>
+            </div>
+            <div id="privacy-imprint-flex" class="privacy-imprint-flex">
+                <button onclick="openPrivacy()" id="privacy">privacy</button>
+                <button onclick="openImprint()" id="imprint">imprint</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

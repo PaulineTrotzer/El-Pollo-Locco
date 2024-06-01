@@ -1,0 +1,273 @@
+* {
+  box-sizing: border-box;
+}
+
+#body-privacy-imprint {
+  display: block;
+  background-image: url("img/10_background_canvas/orange-bg.jpg");
+  background-position: top;
+  background-repeat: repeat-y;
+  font-family: "margarita", Arial, Helvetica, sans-serif;
+  margin: 0;
+}
+
+#privacy-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 12px;
+  gap: 50px;
+}
+
+h1 {
+  display: flex;
+  font-size: 110px;
+  letter-spacing: 7px;
+  text-shadow: 9px 9px 9px rgb(23 22 22 / 25%);
+  font-weight: 600;
+  color: #6f1010;
+  margin-left: 5px;
+}
+
+#text-container {
+  display: flex;
+  flex-direction: column;
+}
+
+h2 {
+  display: flex;
+  font-size: 48px;
+}
+
+.h1-back-img-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin: 65px 10px 0 10px;
+}
+
+.back-main-img {
+  width: 130px;
+  transition: transform 125ms;
+  cursor: pointer;
+  object-fit: contain;
+}
+
+.back-main-img:hover {
+  transform: scale(1.1);
+}
+
+h3 {
+  display: flex;
+}
+
+p {
+  display: block;
+  font-size: 28px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  font-size: 20px;
+}
+ul li::before {
+  content: "•";
+  color: #a81a1a;
+  font-weight: bold;
+  display: inline-block;
+  width: 15px;
+}
+
+hr {
+  border: 0;
+  border-top: 2px solid #a81a1a;
+  height: 2px;
+  width: 100%;
+}
+
+@media only screen and (max-width: 970px) {
+  #privacy-content {
+    gap: 33px;
+  }
+  h1 {
+    font-size: 75px;
+  }
+  .h1-back-img-flex {
+    justify-content: flex-start;
+    gap: 50px;
+  }
+  h2 {
+    font-size: 38px;
+  }
+  .back-main-img {
+    width: 100px;
+  }
+  h3 {
+    font-size: 16px;
+  }
+  p {
+    font-size: 22px;
+  }
+}
+
+@media only screen and (max-width: 760px) {
+  h1 {
+    font-size: 56px;
+  }
+  .back-main-img {
+    width: 70px;
+  }
+  h2 {
+    font-size: 28px;
+  }
+  p {
+    font-size: 18px;
+  }
+}
+
+@media only screen and (max-width: 640px) {
+  .h1-back-img-flex {
+    justify-content: flex-start;
+    align-items: flex-end;
+    margin: 0 0 0 0;
+  }
+  h1 {
+    font-size: 30px;
+    margin-block-start: 0;
+    margin-block-end: 0;
+    margin-top: 20px;
+  }
+  h2 {
+    font-size: 14px;
+  }
+  #li-privacy {
+    font-size: 12px;
+  }
+  p {
+    font-size: 14px;
+  }
+  .back-main-img {
+    width: 36px;
+  }
+}
+
+@media only screen and (max-width: 640px) {
+  p {
+    font-size: 9px;
+  }
+}
+/* imprint - styles */
+/*<<<<<<<<--------->>>>>>*/
+
+#h1-imprint {
+  text-align: center;
+  display: flex;
+  padding-left: 14px;
+}
+
+.h1-back-img-flex-imprint {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0;
+}
+
+.back-main-img-imprint {
+  width: 100px;
+  object-fit: contain;
+}
+#imprint-and-sources {
+  display: flex;
+  flex-direction: column;
+}
+
+#imprint-plus-sources-flex {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 100%;
+  padding-left: 14px;
+}
+
+#imprint-p {
+  font-size: 40px;
+}
+
+#sources-container {
+  margin-bottom: 42px;
+}
+
+@media only screen and (max-width: 1110px) {
+  .h1-back-img-flex-imprint {
+    justify-content: flex-start;
+    gap: 20px;
+  }
+  .back-main-img-imprint {
+    width: 80px;
+  }
+  #h1-imprint {
+    font-size: 74px;
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  #h1-imprint {
+    font-size: 50px;
+  }
+  #imprint-p {
+    font-size: 26px;
+  }
+  #li-imprint {
+    font-size: 18px;
+  }
+}
+
+@media only screen and (max-width: 610px) {
+  #imprint-and-sources {
+    gap: 37px;
+  }
+
+  #h1-imprint {
+    font-size: 30px;
+  }
+  .h1-back-img-flex-imprint {
+    flex-wrap: wrap;
+    align-items: flex-end;
+    margin-top: 16px;
+  }
+  .back-main-img-imprint {
+    width: 60px;
+    padding-left: 14px;
+  }
+  #imprint-p {
+    font-size: 19px;
+  }
+}
+
+@media only screen and (max-width: 355px) {
+  #h1-imprint {
+    font-size: 24px;
+  }
+  #imprint-and-sources {
+    gap: 0;
+  }
+
+  .back-main-img-imprint {
+    margin-top: 14px;
+    margin-bottom: 28px;
+  }
+  #ulist-imprint {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  #imprint-p {
+    font-size: 18px;
+  }
+}
