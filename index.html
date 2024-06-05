@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" tranlsate="no">
 
 <head>
     <meta charset="UTF-8">
@@ -7,7 +7,7 @@
     <title>El Pollo Locco</title>
     <link rel="icon" href="icons/favicon/mariachi_10905390.png" type="image/x-icon">
     <link rel="stylesheet" href="fonts/font.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./css/style.css">
     <script src="assets/images.canvas.js" defer></script>
     <script src="models/drawable-object.class.js"></script>
     <script src="models/sounds.class.js" defer></script>
@@ -23,33 +23,35 @@
     <script src="models/throwable-object.class.js" defer></script>
     <script src="models/coin.class.js" defer></script>
     <script src="models/level.class.js" defer></script>
+    <script src="levels/level1.js" defer></script>
     <script src="models/world.class.js" defer></script>
     <script src="models/bottle-statusbar.class.js" defer></script>
-    <script src="levels/level1.js" defer></script>
     <script src="models/health-statusbar.class.js" defer></script>
     <script src="models/coin-statusbar.class.js" defer></script>
     <script src="models/keyboard.class.js" defer></script>
     <script src="js/game.js" defer></script>
 </head>
 
-<body id="body" onload="turnDevice()" onclick="closeInstructions(event)">
+<body id="body" onload="implementTurnDevice()" onclick="closeInstructions(event)">
     <div id="h1-plus-content" onclick="closeInstructions(event)">
         <h1>El Pollo Locco</h1>
         <div id="content" class="content">
-            <div id="turn-device-overlay" class="d-none">
+            <div id="turn-device-overlay" class="turn-device-overlay">
                 <img class="turn-phone-img" src="icons/rotate-device/rotate-phone.png">
             </div>
-            <div id="game-loading-ct" class="game-loading-ct">
-                <span id="loading-text">Loading Locco World</span>
+            <div id="game-loading-ct" class="game-loading-ct d-none">
+                <div id="loading-text" class="game-loading-text">
+                    <span>Loading </span>
+                    <span>Locco </span>
+                    <span>World</span>
+                </div>
             </div>
-            <button onclick="stopIntervals()">Stop Intervals</button>
             <canvas id="canvas" width="780" height="480">
             </canvas>
             <div id="startscreen-container" class="startscreen-container">
                 <img id="onload-screen-image" class="onload-screen-image"
                     src="img/9_intro_outro_screens/start/startscreen_1.png">
-                <img onclick="letsPlay(); hideStartScreen();" id="press-play-icon" src="icons/pressPlay/play.png"
-                    class="press-play-icon">
+                <img onclick="letsPlay()" id="press-play-icon" src="icons/pressPlay/play.png" class="press-play-icon">
                 <audio id="audio" style="display:none" src="audio/lets-go.mp3"></audio>
             </div>
             <div id="icon-container" class="icon-container">
@@ -79,7 +81,7 @@
                 <div id="lg-loco" class="flex-row">
                     <div id="go-loco-imgs" class="go-loco-imgs">
                         <img class="img" src="img/2_character_pepe/3_jump/J-36.png">
-                        <img onclick="backToPlayScreen()" class="img cp" src="icons/instructions/go-back.png">
+                        <img onclick="hideInstructions()" class="img cp" src="icons/instructions/go-back.png">
                     </div>
                     <p>lets go locco!</p>
                 </div>
@@ -94,7 +96,7 @@
                     src="img/9_intro_outro_screens/game_over/you lost.png">
                 <img id="endscreen-img" class="endscreen-img" src="img/5_background/second_half_background.png">
             </div>
-            <div id="responsive-button-set" class="responsive-button-set d-none">
+            <div id="responsive-button-set" class="responsive-button-set">
                 <div class="responsive-walking">
                     <img id="btn-left" class="img-resp cp" src="icons/responsive-btns/left-walk.png">
                     <img id="btn-right" class="img-resp cp" src="icons/responsive-btns/right-walk.png" alt="">

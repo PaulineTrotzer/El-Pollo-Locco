@@ -1,4 +1,3 @@
-//Objekte für ein neues Level werden in der korrekten Reihenfolge (wie bei level1.js) initialisiert//
 class Level {
     enemies;
     clouds;

@@ -24,6 +24,10 @@ class Sounds {
     }
 
 
+    /**
+     *  plays a sound if the variable audioMute is not active; otherwise the sound is paused.
+     * @param {audioElement} sound 
+     */
     playSound(sound) {
         if (!audioMute) {
             sound.play();
@@ -33,6 +37,9 @@ class Sounds {
     }
 
 
+    /**
+     * adjusts some presets to improve audio quality
+     */
     settingSoundQuality() {
         this.background_music.loop = true;
         this.setVolume(this.background_music, 0.1);
@@ -41,20 +48,26 @@ class Sounds {
     }
 
 
+    /**
+     * adjusts the volume for the audio element
+     * @param {audioElement} sound 
+     * @param {float} percent 
+     */
     setVolume(sound, percent) {
         if (sound) {
             sound.volume = percent;
-        } else {
-            console.log(`Sound ${soundName} not found.`);
         }
     }
 
 
+    /**
+     * changes the playback speed of an audio sound
+     * @param {audioElement} sound 
+     * @param {float} num 
+     */
     backgroundMusicRate(sound, num) {
         if (sound) {
             sound.playbackRate = num;
-        } else {
-            console.log(`Sound ${soundName} not found.`);
         }
     }
 }

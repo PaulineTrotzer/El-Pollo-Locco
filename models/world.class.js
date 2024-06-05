@@ -4,27 +4,20 @@ class World extends DrawableObject {
     ctx;
     sounds;
     keyboard;
-    camera_x;//
-    character;//
-    healthbar;// 
-    coinBar;//
-    bottleBar;//
-    endbossBar;//
-    amountOfCoins;//
-    amountOfBottles;//
-    throwableObjects;//
-    isThrowingBottle;//
-    currentBottleHit;//
-    endboss_entered;//
-    timeTofight;//
-
-
+    camera_x;
+    character;
+    healthbar;
+    coinBar;
+    bottleBar;
+    endbossBar;
+    amountOfCoins;
+    amountOfBottles;
+    throwableObjects = [];
+    isThrowingBottle;
+    currentBottleHit;
+    endboss_entered;
+    timeTofight;
     endboss;
-    checkItemsandMusicInterval;
-    checkEnemyCollisionsInterval;
-    animateEndbossInterval;
-    lookForDeadEnemiesInterval;
-    intervalIds = [];
 
 
     constructor(canvas, sounds, keyboard) {
@@ -34,25 +27,15 @@ class World extends DrawableObject {
         this.sounds = sounds;
         this.keyboard = keyboard;
         this.startWorld();
-       // this.pushAll();
     }
 
 
+    /**
+     * performs basic functions after creating the world class to start the world
+     */
     startWorld() {
-        this.level = level1;
-        this.character = new Character(this.world, this.camera_x);
-        this.healthbar = new Healthbar();
-        this.coinBar = new CoinBar();
-        this.bottleBar = new BottleBar();
-        this.endbossBar = new endbossHealthBar();
-        this.camera_x = 0;
-        this.amountOfCoins = 0;
-        this.amountOfBottles = 0;
-        this.throwableObjects = [];
-        this.isThrowingBottle = false;
-        this.currentBottleHit = false;
-        this.endboss_entered = false;
-        this.timeTofight = false;
+        this.setWorldStates();
+        this.implementingObjects();
         this.findEndboss();
         this.setWorld();
         this.draw();
@@ -60,61 +43,44 @@ class World extends DrawableObject {
     }
 
 
-
-    /* Test für Reload Funktion - Intervalle Clearen*/
-    clearAll() {
-        this.intervalIds.forEach(id => {
-            clearInterval(id)
-        });
-        console.log('after clearing', this.intervalIds);
+    /**
+     * puts essential variables of the world into certain states, numerical ratios, declares them
+     */
+    setWorldStates() {
+        this.level = level1;
+        this.camera_x = 0;
+        this.amountOfCoins = 0;
+        this.amountOfBottles = 0;
+        this.isThrowingBottle = false;
+        this.currentBottleHit = false;
+        this.endboss_entered = false;
+        this.timeTofight = false;
     }
 
 
-    pushAll() {
-        this.level.bottles.forEach(bottle => {
-            this.intervalIds.push(bottle.animationOfBottles);
-        });
-        this.intervalIds.push(this.character.deathInterval);
-        this.intervalIds.push(this.character.moveInterval);
-        this.intervalIds.push(this.character.playAnimationsInterval);
-        this.intervalIds.push(this.character.controlIdleInterval);
-        this.intervalIds.push(this.character.stopIdleInterval);
-        this.level.enemies.forEach(enemy => {
-            if (enemy instanceof Chicken) {
-                this.intervalIds.push(enemy.animateMoveLeft);
-                this.intervalIds.push(enemy.animateWalkingInterval);
-            }
-        });
-        this.level.clouds.forEach(cloud => {
-            this.intervalIds.push(cloud.cloudInterval);
-        });
-        this.level.coins.forEach(coin => {
-            this.intervalIds.push(coin.coinAnimation);
-        });
-
-        this.intervalIds.push(this.endboss.deathInterval);
-        this.intervalIds.push(this.endboss.walkingInterval);
-        this.level.enemies.forEach(enemy => {
-            if (enemy instanceof littleChicken) {
-                this.intervalIds.push(enemy.animateMoveLeft);
-                this.intervalIds.push(enemy.hoppingChickenInterval);
-                this.intervalIds.push(enemy.animateWalkingInterval);
-            }
-        });
-        this.intervalIds.push(this.checkItemsandMusicInterval);
-        this.intervalIds.push(this.checkEnemyCollisionsInterval);
-        this.intervalIds.push(this.lookForDeadEnemiesInterval);
-        console.log(this.intervalIds);
+    /**
+     * implements important base objects via creation of new classes
+     */
+    implementingObjects() {
+        this.character = new Character();
+        this.healthbar = new Healthbar();
+        this.coinBar = new CoinBar();
+        this.bottleBar = new BottleBar();
+        this.endbossBar = new endbossHealthBar();
     }
-    /* Ende Test Reload */
 
 
+    /**
+     * the final boss is filtered from the enemy array
+     */
     findEndboss() {
         this.endboss = this.level.enemies.find(enemy => enemy instanceof Endboss);
     }
 
 
-
+    /**
+     * it assigns the current world instance (`this`) to the `world` property of various game components. 
+     */
     setWorld() {
         this.character.world = this;
         this.bottleBar.world = this;
@@ -123,43 +89,48 @@ class World extends DrawableObject {
     }
 
 
-
+    /**
+     * this function starts several intervals that continuously perform various checks to control the basic logic of the world.
+     */
     controlGame() {
-        this.checkItemsandMusicInterval = setInterval(() => {
+        setInterval(() => {
             this.checkItemCollisions();
             this.checkForThrow();
             this.checkBackgroundMusic();
-        }, 10);
-        this.checkEnemyCollisionsInterval = setInterval(() => {
-            this.checkEnemyCollisions();
-        }, 50);
-        this.animateEndbossInterval = setInterval(() => {
-            this.animateEndboss();
-        }, 450);
-        this.lookForDeadEnemiesInterval = setInterval(() => {
-            this.lookForDeadEnemies();
-        }, 900);
+        }, 5);
+        setInterval(() => this.checkLivingBeingCollisions(), 50);
+        setInterval(() => this.behaviourAnimationBoss(), 450);
+        setInterval(() => this.lookForDeadEnemies(), 900);
     }
 
 
-
-    checkEnemyCollisions() {
-        this.checkEndbossDamage();
+    /**
+     * 
+    This function checks all types of collisions between living beings
+     */
+    checkLivingBeingCollisions() {
+        this.checkEndbossCollision();
         this.checkGroundCollisions()
     }
 
 
-
-    animateEndboss() {
+    /**
+     * decides on the animation of the final boss's behavior
+     */
+    behaviourAnimationBoss() {
         if (this.character.isNearby(this.endboss) && !this.endboss_entered) {
             this.animateIntroEndboss(this.endboss);
         } else
             if (this.endboss_entered && this.endboss.isHurt()) {
-                this.endboss.makeCrying();
+                this.endboss.animateEndbossInjuries();
             }
     }
 
 
+    /**
+     * controls the intro animation of the final boss
+     * @param {object} endboss 
+     */
     animateIntroEndboss(endboss) {
         this.timeTofight = true;
         keyboard.letCharacterStop();
@@ -170,22 +141,28 @@ class World extends DrawableObject {
     }
 
 
+    /**
+     * ends the animation of the final boss
+     */
     endbossAnimationfinished() {
         this.endboss_entered = true;
         keyboard.letCharacterStart();
     }
 
 
-    checkEndbossDamage() {
+    /**
+     * this function checks whether the endboss collides with a character or a bottle and calculates damage accordingly
+     */
+    checkEndbossCollision() {
         if (this.endboss_entered) {
             if (this.endboss.isColliding(this.character)) {
                 if (this.character.isAboveGround() && this.character.isFalling() && !this.character.isDead()) {
-                    this.endbossLosingEnergy(3);
+                    this.endbossLosingEnergy(2);
                 }
             }
             this.throwableObjects.forEach(bottle => {
                 if (this.endboss.isColliding(bottle) && !this.currentBottleHit) {
-                    this.endbossLosingEnergy(10);
+                    this.endbossLosingEnergy(11);
                     this.bottleMovement(bottle);
                     this.finishAttackPepe();
                 }
@@ -194,15 +171,21 @@ class World extends DrawableObject {
     }
 
 
-
+    /**
+     * animates the final boss when injured and controls its life bar
+     * @param {integer} damage - damage points suffered by the final boss
+     */
     endbossLosingEnergy(damage) {
         this.endboss.hit(damage);
         this.endbossBar.setHealthPercentage(this.endboss.energy);
-        this.endboss.makeCrying();
+        this.endboss.animateEndbossInjuries();
     }
 
 
-
+    /**
+     * controls the movement of the flying bottle through the world
+     * @param {object} bottle - one bottle from bottle array
+     */
     bottleMovement(bottle) {
         bottle.stopGravity();
         bottle.stopFlyingBottle();
@@ -210,52 +193,70 @@ class World extends DrawableObject {
     }
 
 
+    /**
+     * indicates when the character has finished his throw
+     */
     finishAttackPepe() {
         this.currentBottleHit = true;
     }
 
 
-    lookForDeadEnemies() {
-        this.level.enemies.forEach(enemy => {
-            if (this.character.isColliding(enemy) && enemy.isNowDead) {
-                this.letDisappear(this.level.enemies, enemy.id);
-            }
-        });
-    }
-
-
+    /**
+     * 
+     */
     checkForThrow() {
         if (!this.isThrowingBottle && this.enoughBottlesToThrow()) {
-            this.isThrowingBottle = true;
-            this.currentBottleHit = false;
+            this.setsTimingFactorsThrow();
             this.createThrowableObject();
             this.decreaseAmountOfBottles();
-        } else if (!keyboard.D) {
+        } else if (this.character.noThrowingAction()) {
             this.isThrowingBottle = false;
         }
     }
 
 
+    /**
+     * controls the timing of the throw by giving flags
+     */
+    setsTimingFactorsThrow() {
+        this.isThrowingBottle = true;
+        this.currentBottleHit = false;
+    }
+
+
+    /**
+     * creates a throwable object and adds it to the corresponding array
+     */
     createThrowableObject() {
         let bottle = new ThrowableObject(this.character.x + 20, this.character.y + 100);
         this.throwableObjects.push(bottle);
     }
 
 
+    /**
+     * checks wether there are enough bottles to throwe
+     * @returns -boolean
+     */
     enoughBottlesToThrow() {
         return keyboard.D && this.amountOfBottles > 0;
     }
 
 
+    /**
+     * reduces the number of existing bottles and updates the bottle display
+     */
     decreaseAmountOfBottles() {
         this.amountOfBottles -= 10;
         if (this.amountOfBottles <= 0) {
             this.amountOfBottles = 0;
         }
-        this.bottleBar.setBottlePercentage(this.amountOfBottles);
+        this.bottleBar.setPercentage(this.amountOfBottles);
     }
 
 
+    /**
+     * this function checks which creature collides with the character and carries out further steps accordingly
+     */
     checkGroundCollisions() {
         this.level.enemies.forEach(enemy => {
             if (this.character.isColliding(enemy)) {
@@ -271,94 +272,86 @@ class World extends DrawableObject {
     }
 
 
+    /**
+     * searches for dead enemies and makes them disappear after a while
+     */
+    lookForDeadEnemies() {
+        this.level.enemies.forEach(enemy => {
+            if (this.character.isColliding(enemy) && enemy.isNowDead) {
+                this.letDisappear(this.level.enemies, enemy.id);
+            }
+        });
+    }
 
+
+    /**
+     * checks the collisions of the character with two types of items and executes further steps accordingly
+     */
     checkItemCollisions() {
         this.level.bottles.forEach(bottle => {
             if (this.character.isColliding(bottle)) {
                 this.increaseAmountofBottles();
                 this.letDisappear(this.level.bottles, bottle.id);
                 this.sounds.playSound(this.sounds.bottlePickup_sound);
-                this.bottleBar.increaseBottleBar(this.amountOfBottles);
+                this.bottleBar.setPercentage(this.amountOfBottles);
             }
-            this.level.coins.forEach(coin => {
-
-                if (this.character.isColliding(coin)) {
-                    this.increaseCoinStatus();
-                    coin.letDisappear(this.level.coins, coin.id);
-                    this.sounds.playSound(this.sounds.coinPickup_sound);
-                    this.coinBar.setCoinPercentage(this.amountOfCoins);
-                }
-            });
+        });
+        this.level.coins.forEach(coin => {
+            if (this.character.isColliding(coin)) {
+                this.increaseCoinStatus();
+                this.letDisappear(this.level.coins, coin.id);
+                this.sounds.playSound(this.sounds.coinPickup_sound);
+                this.coinBar.setPercentage(this.amountOfCoins);
+            }
         });
     }
 
 
+    /**
+     * increases amount of coins
+     */
     increaseCoinStatus() {
-        this.amountOfCoins += 1.3;
+        this.amountOfCoins += 1.25;
         if (this.amountOfCoins >= 100) {
             this.amountOfCoins = 100;
         }
     }
 
 
-    letDisappear(bottleArray, bottleID) {
-        const collidingBottle = this.findCollidingObject(bottleArray, bottleID);
-        this.removeFromArray(bottleArray, collidingBottle);
-    }
-
-
-    findCollidingObject(bottleArray, bottleID) {
-        for (let i = 0; i < bottleArray.length; i++) {
-            if (bottleArray[i].id == bottleID) {
-                return i;
-            }
-        }
-    }
-
-
-    removeFromArray(bottleArray, collidingBottle) {
-        bottleArray.splice(collidingBottle, 1);
-    }
-
-
+    /**
+     * increases amount of bottles
+     */
     increaseAmountofBottles() {
         this.amountOfBottles += 10;
         if (this.amountOfBottles >= 100) {
             this.amountOfBottles = 100;
-        } else {
-            return
         }
     }
 
 
+    /**
+     * redraws the entire content of the game scene by adding various objects like on the map. 
+     * the context is emptied and the context for drawing is moved (to the right), at the end the context is moved back to the left (redrawing)
+     */
     draw() {
         this.clearContent();
         this.stickPlayerView('right');
-
         this.addObjectsToMap(this.level.backgroundObjects);
         this.addObjectsToMap(this.level.clouds);
         this.addToMap(this.character);
-
         this.implementStatusBars();
-
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.throwableObjects);
         this.addObjectsToMap(this.level.bottles);
         this.addObjectsToMap(this.level.coins);
-
         this.stickPlayerView('left');
         requestAnimationFrame(this.reDraw.bind(this));
     }
 
 
-    reDraw() {
-        let self = this;
-        requestAnimationFrame(function () {
-            self.draw();
-        });
-    }
-
-
+    /**
+     * implements all statusbars within the world
+     */
     implementStatusBars() {
         this.stickStatusBars('left');
         this.addToMap(this.bottleBar);
@@ -371,45 +364,11 @@ class World extends DrawableObject {
     }
 
 
-    clearContent() {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    }
-
-
-    stickPlayerView(direction) {
-        if (direction == 'right') {
-            this.ctx.translate(this.camera_x, 0);
-        } else if (direction === 'left') {
-            this.ctx.translate(-this.camera_x, 0);
-        }
-
-    }
-
-
-    stickStatusBars(direction) {
-        if (direction == 'left') {
-            this.ctx.translate(-this.camera_x, 0);
-        } else if (direction === 'right') {
-            this.ctx.translate(this.camera_x, 0);
-        }
-    }
-
-
-    flipImage(mo) {
-        this.ctx.save();
-        this.ctx.translate(mo.width, 0);
-        this.ctx.scale(-1, 1);
-        mo.x = mo.x * -1;
-    }
-
-
-    flipImageBack(mo) {
-        mo.x = mo.x * -1;
-        this.ctx.restore();
-    }
-
-
+    /**
+     * checks if the background music is turned on 
+     */
     checkBackgroundMusic() {
         this.sounds.playSound(this.sounds.background_music);
     }
+
 } 

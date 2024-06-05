@@ -1,5 +1,4 @@
 class BottleBar extends DrawableObject {
-    percentage;
 
     constructor() {
         super();
@@ -8,22 +7,25 @@ class BottleBar extends DrawableObject {
         this.y = 105;
         this.width = 200;
         this.height = 60;
-        this.setBottlePercentage(0);
+        this.setPercentage(0);
     }
 
 
-    increaseBottleBar(amountOfBottles) {
-        this.setBottlePercentage(amountOfBottles);
-    }
-
-
-    setBottlePercentage(percentage) {
-        this.percentage = percentage; // => 0 ....5
+    /**
+     * Receives the current value of the number of bottles, and displays the corresponding image via image cache.
+     * @param {number} percentage - amount of Bottles as percentag
+     */
+    setPercentage(percentage) {
+        this.percentage = percentage;
         let path = IMAGES_BOTTLE[this.resolveImageIndex()]
         this.img = this.imageCache[path];
     }
 
 
+    /**
+     * this function determines the index of an image based on the current percentage
+     * @returns - index of array (IMAGES_BOTTLE)
+     */
     resolveImageIndex() {
         if (this.percentage == 0) {
             return 0;

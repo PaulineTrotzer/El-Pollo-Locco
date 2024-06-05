@@ -15,6 +15,11 @@ class Keyboard {
         this.stopInput = false;
     }
 
+
+    /**
+     * this function links the touch and mouse events of the controls (btn-left, btn-right,...) with the corresponding actions (LEFT, RIGHT, ..) of the Keyboard class, 
+     * ensuring the actions are only executed if stopInput is not set.
+     */
     bindBtnPressEvents() {
         const buttons = [
             { id: 'btn-left', action: 'LEFT' },
@@ -46,6 +51,9 @@ class Keyboard {
     }
 
 
+    /**
+     * This function adds event listeners for keydown and keyup events to the window to update state variables (SPACE, LEFT, UP, etc.) based on the pressed and released keys (space, arrow keys, etc.) if stopInput is not active.
+     */
     bindKeyPressEvents() {
         window.addEventListener('keydown', (e) => {
             if (!this.stopInput) {
@@ -92,28 +100,22 @@ class Keyboard {
         });
     }
 
+    
+    /**
+     * this function disables an input-lock (keyboard-action possible) by using a "startCharacter" event.
+     */
     letCharacterStart() {
         this.stopInput = false;
         document.dispatchEvent(new CustomEvent('startCharacter'));
     }
 
+
+    /**
+     *  this function enables an input-lock (no keyboard-action possible) by using a "stopCharacter" event.
+     */
     letCharacterStop() {
         this.stopInput = true;
         document.dispatchEvent(new CustomEvent('stopCharacter'));
     }
-
-    bindCharacterStopEvent() {
-        window.addEventListener('stopCharacter', this.handleCharacterStopEvent.bind(this));
-    }
-
-
-    handleCharacterStopEvent() {
-        this.stopInput = true;
-    }
-
-    handleCharacterStartEvent() {
-        this.stopInput = false;
-    }
-
 
 }

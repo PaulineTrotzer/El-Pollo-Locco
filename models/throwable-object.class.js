@@ -11,7 +11,6 @@ class ThrowableObject extends MovableObject {
     };
     id;
 
-
     constructor(x, y) {
         super().loadImage('img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png')
         this.loadImages(BOTTLE_ROTATING);
@@ -26,16 +25,21 @@ class ThrowableObject extends MovableObject {
     }
 
 
-
+    /**
+     * shows a flying bottle 
+     */
     throw() {
-        this.flyingBottleInterval =
-            setInterval(() => {
-                this.moveBottleForward();
-                this.playAnimation(BOTTLE_ROTATING)
-            }, 50);
+        this.flyingBottleInterval = setInterval(() => {
+            this.moveBottleForward();
+            this.playAnimation(BOTTLE_ROTATING)
+        }, 50);
     }
 
 
+    /**
+     * checks wether the animation is over
+     * @returns - boolean
+     */
     AnimationisOver() {
         return !this.currentImage % BOTTLE_SPLASH.length;
     }
@@ -52,11 +56,17 @@ class ThrowableObject extends MovableObject {
     }
 
 
+    /**
+     * stops the flying animation
+     */
     stopFlyingBottle() {
         clearInterval(this.flyingBottleInterval);
     }
 
 
+    /**
+     * this function is responsible for the forward movement of the bottle
+     */
     moveBottleForward() {
         this.x += 20;
         if (this.isOnTheGround()) {
@@ -65,14 +75,13 @@ class ThrowableObject extends MovableObject {
     }
 
 
+    /**
+     * this function causes the bottle to shatter on the floor
+     */
     bottleOnGroundSplash() {
         this.stopGravity();
         this.stopFlyingBottle();
         this.isSplashing();
     }
-
-
-
-
 
 }

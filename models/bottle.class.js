@@ -9,7 +9,7 @@ class Bottle extends DrawableObject {
         left: 30,
         right: 20
     };
-    animationOfBottles;
+
 
     constructor(startX) {
         super().loadImage('img/6_salsa_bottle/1_salsa_bottle_on_ground.png');
@@ -19,9 +19,11 @@ class Bottle extends DrawableObject {
         this.animateBottles();
     }
 
+
+    /**
+     * animates every individual bottles of the world
+     */
     animateBottles() {
-      this.animationOfBottles =  setInterval(() => {
-            this.playAnimation(ANIMATION_BOTTLE);
-        }, 380);
+        setInterval(() => this.playAnimation(ANIMATION_BOTTLE), 380);
     }
 }

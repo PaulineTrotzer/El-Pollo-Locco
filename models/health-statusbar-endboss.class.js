@@ -1,5 +1,6 @@
 class endbossHealthBar extends DrawableObject {
     constructor() {
+       
         super().loadImages(ENDBOSS_HEALTH_BAR);
         this.x = 550;
         this.y = 58;
@@ -8,6 +9,11 @@ class endbossHealthBar extends DrawableObject {
         this.setHealthPercentage(100);
     }
 
+
+     /**
+      * Receives the current value of health points, and displays the corresponding image via image cache.
+      * @param {number} percentage - amount of health points as percentage
+      */
     setHealthPercentage(percentage) {
         this.percentage = percentage; // => 0 ....5
         let path = ENDBOSS_HEALTH_BAR[this.resolveImageIndex()]
@@ -15,6 +21,11 @@ class endbossHealthBar extends DrawableObject {
     }
 
 
+
+    /**
+     * this function determines the index of an image based on the current percentage
+     * @returns - index of array (ENDBOSS_HEALTH_BAR)
+     */
     resolveImageIndex() {
         if (this.percentage == 100) {
             return 5;

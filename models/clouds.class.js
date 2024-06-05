@@ -1,4 +1,4 @@
-class Cloud extends MovableObject {  
+class Cloud extends MovableObject {
     y = 50;
     height = 250;
     width = 500;
@@ -13,11 +13,11 @@ class Cloud extends MovableObject {
         this.animate();
     }
 
-
+    /**
+     * animates the movement of a cloud
+     */
     animate() {
-       this.cloudInterval = setInterval(() => {
-            this.moveLeft();
-        }, 100);
+        setInterval(() => this.moveLeft(), 100);
     }
 
 }

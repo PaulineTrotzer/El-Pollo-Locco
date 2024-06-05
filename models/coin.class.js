@@ -1,18 +1,15 @@
 class Coin extends DrawableObject {
-    x = 400;
     width = 120;
     height = 100;
     id;
     offset = {
-        top: 50,
-        bottom: 0,
+        top: 0,
+        bottom: 70,
         left: 30,
         right: 20
     };
     coinPickup_sound = new Audio('audio/coinPickup.mp3');
     offset_displacement_y = 3;
-    coinAnimation;
-
 
 
     constructor(startX, startY) {
@@ -25,17 +22,11 @@ class Coin extends DrawableObject {
     }
 
 
-    generateUniqueId() {
-        return 'coin_' + Math.random().toString(36).substr(2, 9);
-    }
-
-    animateCoins() {
-       this.coinAnimation =  setInterval(() => {
-            this.playAnimation(ANIMATION_COIN);
-        }, 380);
-    }
-
-
+    /**
+     * determines a randomly generated y-coordinate
+     * @param {integer} startY 
+     * @returns - new y-coordinate
+     */
     setRandomY(startY) {
         let randomFactor = Math.floor(Math.random() * (5 - 2 + 1)) + 2;
         let randomDisplacement = randomFactor * this.offset_displacement_y + startY;
@@ -44,30 +35,11 @@ class Coin extends DrawableObject {
     }
 
 
-    letDisappear(coinArray, coinID) {
-        const collidingCoin = this.findCollidingCoin(coinArray, coinID);
-        if (collidingCoin !== -1) {
-            this.removeFromArray(coinArray, collidingCoin);
-        }
+    /**
+     * animates one coin
+     */
+    animateCoins() {
+        setInterval(() => this.playAnimation(ANIMATION_COIN), 380);
     }
-
-
-
-    findCollidingCoin(coinArray, coinID) {
-        for (let i = 0; i < coinArray.length; i++) {
-            if (coinArray[i].id == coinID) {
-                console.log('collidingIndex', i);
-                return i;
-            }
-        }
-    }
-
-
-    removeFromArray(coinArray, collidingCoin) {
-        if (collidingCoin !== -1) {
-            coinArray.splice(collidingCoin, 1);
-        }
-    }
-
 
 }

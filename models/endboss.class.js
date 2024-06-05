@@ -17,7 +17,6 @@ class Endboss extends MovableObject {
     endbossIsCryingInterval;
     hasCried = false;
     deathInterval;
-    yellOut = false;
 
 
     constructor() {
@@ -29,10 +28,13 @@ class Endboss extends MovableObject {
         this.loadImages(ENDBOSS_DEAD);
         this.loadImagetoCache('img/5_background/second_half_background.png');
         this.startWalking();
-        this.checkDeath();
+        this.runDeathAnimation();
     }
 
 
+    /**
+     * shows endboss walking
+     */
     startWalking() {
         this.walkingInterval = setInterval(() => {
             this.playAnimation(ENDBOSS_WALKING);
@@ -41,121 +43,209 @@ class Endboss extends MovableObject {
     }
 
 
-    stopWalking() {
+    /**
+     * stops endboss walking animation
+     */
+    stopWalkingAnimation() {
         clearInterval(this.walkingInterval);
     }
 
 
+    /**
+     * shows the alert animation and leads to the next animation
+     */
     alertAnimation() {
         this.playAnimation(ENDBOSS_EYECONTACT);
-        if (!this.hasScreamed) {
-            this.startScreaming();
-        }
-        this.stopWalking();
+        this.proofScreamingBehaviour();
+        this.stopWalkingAnimation();
         setTimeout(() => {
             this.attackAnimation();
         }, 500);
     }
 
 
+    /**
+     * proofs if endboss has screamed already
+     */
+    proofScreamingBehaviour() {
+        if (!this.hasScreamed) {
+            this.startScreaming();
+        }
+    }
+
+
+    /**
+     * plays the screaming sound of the endboss and sets the flag to - already screamed.
+     */
     startScreaming() {
         sounds.playSound(sounds.introScreaming);
         this.hasScreamed = true;
     }
 
 
+    /**
+     * shows the attack animation of the endboss and finishes it as he begins to run
+     */
     attackAnimation() {
         this.playAnimation(ENDBOSS_ATTACK);
         this.startWalking();
-        this.startFlapping();
+        this.startFlappingSound();
         setTimeout(() => {
             this.stopFlapping();
-            this.speed = 18;
+            this.beginsToRun();
         }, 1300);
     }
 
 
-    startFlapping() {
+    /**
+     * lets the endboss run
+     */
+    beginsToRun() {
+        this.speed = 40;
+    }
+
+
+    /**
+     * plays the flapping sound
+     */
+    startFlappingSound() {
         sounds.playSound(sounds.flappingWings);
     }
 
 
+    /**
+     * stops the flapping sound
+     */
     stopFlapping() {
         sounds.flappingWings.pause();
     }
 
 
-    makeCrying() {
+    /**
+     * animates the endboss if he was hurt
+     */
+    animateEndbossInjuries() {
         if (!this.hasCried)
-            this.animateCrying();
+            this.showCryingAnimation();
         setTimeout(() => {
             this.hasCried = true;
         }, 300);
-        if (this.hasCried) {
-            this.stopCrying();
-        }
+        this.endbossDamageIsOver();
         setTimeout(() => {
-            this.hasCried = false;
+            this.resetStatusofDamage();
         }, 300);
     }
 
-    animateCrying() {
+
+    /**
+     * stops endboss crying episode
+     */
+    endbossDamageIsOver() {
+        if (this.hasCried) {
+            this.stopCrying();
+        }
+    }
+
+
+    /**
+     * resets the status for the next attack from character
+     */
+    resetStatusofDamage() {
+        this.hasCried = false;
+    }
+
+
+    /**
+     * shows the endboss hurt animation and plays sound of crying
+     */
+    showCryingAnimation() {
         this.playAnimation(ENDBOSS_HURT);
         sounds.playSound(sounds.endbossCrying);
     }
 
 
+    /**
+     * stops sound of crying
+     */
     stopCrying() {
         sounds.endbossCrying.pause();
     }
 
 
-    checkDeath() {
-        this.deathInterval = setInterval(() => {
-            if (this.isDead() && !this.yellOut &&!this.deathCheck) {
-                this.lastActionsEdboss();
-                if (!this.yellOut) {
-                    setTimeout(() => {
-                        this.lastSoundEndboss();
-                        this.yellOut = true;
-                    }, 150);
-                }
-                if (!this.deathCheck && gameStillrunning) {
-                    setTimeout(() => {
-                        this.showEndScreen();
-                        this.deathCheck = true;
-                    }, 1500);
-                }
-            }
-        }, 230);
+    /**
+     * proofs if Endboss is Dead
+     */
+    runDeathAnimation() {
+        setInterval(() => {
+            this.checkDeathAnimation();
+            this.checkForDeathTimeOuts();
+        }, 200);
     }
 
 
-    showEndScreen() {
+    /**
+     * plays the death animation if endboss is dead
+     */
+    checkDeathAnimation() {
+        if (this.isDead()) {
+            this.playAnimation(ENDBOSS_DEAD);
+        }
+    }
+
+
+    /**
+     * goes into controlTimeouts if the endboss is dead.
+     */
+    checkForDeathTimeOuts() {
+        if (this.isDead()) {
+            this.controlTimeOuts();
+        }
+    }
+
+
+    /**
+     * controls the timing and sounds of the death animation
+     */
+    controlTimeOuts() {
+        setTimeout(() => {
+            this.lastSoundEndboss();
+        }, 550);
+        if (gameStillrunning) {
+            setTimeout(() => {
+                this.showWinningScreen();
+            }, 2200);
+        }
+    }
+
+
+    /**
+     * shows a winning screen and plays a connected sound
+     */
+    showWinningScreen() {
         this.winningSoundPlayer();
         stopGame();
         showEndScreenWin();
     }
 
 
-    lastActionsEdboss() {
-        sounds.endbossCrying.pause();
-        this.playAnimation(ENDBOSS_DEAD);
-    }
-
+    /**
+     * plays a painful sound which comes from the endboss if audio is not muted
+     */
     lastSoundEndboss() {
         if (!audioMute) {
             sounds.endbosswasKilled.play();
         }
     }
 
+
+    /**
+     * plays a 'winning' sound if audio is not muted
+     */
     winningSoundPlayer() {
         if (!audioMute) {
             sounds.playerWins.play();
         }
     }
-
-
 }
 
 

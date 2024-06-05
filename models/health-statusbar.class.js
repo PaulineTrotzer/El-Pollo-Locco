@@ -1,5 +1,4 @@
 class Healthbar extends DrawableObject {
-    percentage = 100;
 
     constructor() {
         super();
@@ -12,6 +11,10 @@ class Healthbar extends DrawableObject {
     }
 
 
+    /**
+     * Receives the current value of health points, and displays the corresponding image via image cache.
+     * @param {number} percentage -  amount of health points as percentage
+     */
     setHealthPercentage(percentage) {
         this.percentage = percentage; // => 0 ....5
         let path = IMAGES_HEALTH[this.resolveImageIndex()]
@@ -19,6 +22,10 @@ class Healthbar extends DrawableObject {
     }
 
 
+    /**
+    * this function determines the index of an image based on the current percentage
+    * @returns - index of array (IMAGES_HEALTH)
+    */
     resolveImageIndex() {
         if (this.percentage == 100) {
             return 5;
@@ -34,6 +41,5 @@ class Healthbar extends DrawableObject {
             return 0;
         }
     }
-
 
 }

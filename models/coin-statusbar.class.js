@@ -1,6 +1,5 @@
 class CoinBar extends DrawableObject {
-    percentage;
-    
+
     constructor() {
         super();
         this.loadImages(IMAGES_COIN);
@@ -8,17 +7,24 @@ class CoinBar extends DrawableObject {
         this.y = 50;
         this.width = 200;
         this.height = 60;
-        this.setCoinPercentage(0);
+        this.setPercentage(0);
     }
 
-
-    setCoinPercentage(percentage) {
-        this.percentage = percentage; // => 0 ....5
-        let path = IMAGES_COIN[this.resolveImageIndex()]
+    /**
+     * Receives the current value of the number of coins, and displays the corresponding image via image cache.
+     * @param {number} percentage - amount of coins as percentag
+     */
+    setPercentage(percentage) {
+        this.percentage = percentage;
+        let path = IMAGES_COIN[this.resolveImageIndex()];
         this.img = this.imageCache[path];
     }
 
     
+    /**
+     * this function determines the index of an image based on the current percentage
+     * @returns - index of array (IMAGES_COINS)
+     */
     resolveImageIndex() {
         if (this.percentage == 0) {
             return 0;
@@ -34,4 +40,5 @@ class CoinBar extends DrawableObject {
             return 5;
         }
     }
+
 }

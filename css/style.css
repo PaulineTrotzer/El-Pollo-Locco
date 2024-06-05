@@ -8,8 +8,9 @@ body {
   align-items: flex-start;
   height: 100vh;
   margin: 0;
-  background-image: url("./img/10_background_canvas/mexico.jpg");
+  background-image: url("../img/10_background_canvas/mexico.jpg");
   background-position: top;
+  background-size: cover;
   background-repeat: repeat-y;
   font-family: "margarita", Arial, Helvetica, sans-serif;
 }
@@ -32,9 +33,10 @@ body {
   animation: move-text 0.75s forwards;
   position: relative;
   display: inline-block;
-  font-size: 25px;
-  z-index: 2 !important;
+  font-size: inherit;
 }
+
+
 
 #h1-plus-content {
   text-align: center;
@@ -47,6 +49,7 @@ h1 {
   text-shadow: 9px 9px 9px rgb(23 22 22 / 25%);
   font-weight: 600;
   color: #6f1010;
+  min-width: 70px;
 }
 
 .content {
@@ -55,24 +58,29 @@ h1 {
   justify-content: center;
   align-items: center;
   margin-top: 20px;
+  width: 100%;
 }
 
-#turn-device-overlay {
+.turn-device-overlay {
   position: absolute;
-  display: flex;
+  display: none;
   justify-content: center;
   align-items: center;
   z-index: 1;
   width: 100%;
   height: 100%;
   border-radius: 5px;
-  background-image: url("img/10_background_canvas/orange-bg.jpg");
+  background-image: url("../img/10_background_canvas/orange-bg.jpg");
   background-color: rgba(0, 0, 0, 0.5);
   background-position: bottom;
   box-shadow: 0px 0px 3px 3px rgb(111, 16, 16);
   border-style: solid;
   border-color: #6f1010;
   border-radius: 8px;
+}
+
+.d-flex {
+  display: flex !important;
 }
 
 .turn-phone-img {
@@ -86,10 +94,19 @@ h1 {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url("img/10_background_canvas/orange-bg.jpg");
+  background-image: url("../img/10_background_canvas/orange-bg.jpg");
   border-radius: 5px;
   letter-spacing: 9px;
   font-weight: bold;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.game-loading-text {
+  position: relative;
+  text-align: center;
+  text-wrap: wrap;
+  font-size: 30px;
 }
 
 canvas {
@@ -170,11 +187,12 @@ canvas {
   justify-content: space-around;
   width: 100%;
   height: 100%;
-  background-image: url("img/10_background_canvas/orange-bg.jpg");
+  background-image: url("../img/10_background_canvas/orange-bg.jpg");
   background-position: bottom;
   border-radius: 5px;
   box-shadow: 0px 0px 0px 3px hsl(107.2deg 38.14% 25.05%);
   padding: 0 38px;
+  z-index: 2;
 }
 
 .img {
@@ -274,14 +292,14 @@ p {
 button {
   height: 32px;
   width: 80px;
-  font-family: 'margarita';
+  font-family: "margarita";
   font-size: 15px;
   border-radius: 5px;
   color: #430b0b;
   box-shadow: 0px 0px 1px 1px rgb(111, 16, 16);
   border-color: solid;
   border-color: #6f1010;
-  background-color: transparent;
+  background-color: #f3e9e957;
   cursor: pointer;
   transition: transform 125ms;
 }
@@ -291,21 +309,21 @@ button:hover {
 }
 
 .privacy-info {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    height: 100%;
-    background-color: white;
-    font-family: 'margarita';
-  }
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  font-family: "margarita";
+}
 
-  .mt-80 {
-    margin-top: 80px;
-  }
+.mt-80 {
+  margin-top: 80px;
+}
 
 .d-none {
-  display: none !important;
+  display: none;
 }
 
 /* responsive-buttons to play*/
@@ -315,7 +333,7 @@ button:hover {
   left: 0;
   right: 0;
   bottom: 0px;
-  display: flex;
+  display: none;
   justify-content: space-between;
   align-items: center;
   width: 100%;
@@ -365,23 +383,11 @@ body.fullscreen-mode canvas {
     border-style: none;
   }
 }
-
-@media only screen and (max-height: 790px) {
-  #h1-plus-content {
-    margin-top: 0px;
-  }
-  h1 {
-    display: none !important;
-  }
-
-  .content {
-    margin-top: 0;
-  }
-}
 /* ----------------------*/
 
 /* Smartphone width settings */
 /* <------------------------>*/
+
 
 @media only screen and (max-width: 780px) {
   canvas {
@@ -422,7 +428,7 @@ body.fullscreen-mode canvas {
   }
 
   .animate-text {
-    font-size: 16px;
+    font-size: 11px;
   }
 }
 
@@ -455,5 +461,12 @@ body.fullscreen-mode canvas {
       width: 47px;
       height: 38px;
     }
+  }
+}
+
+
+@media (max-height: 567px){
+  .privacy-imprint-flex {
+    display: none !important;
   }
 }

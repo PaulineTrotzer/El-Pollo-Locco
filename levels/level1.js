@@ -1,6 +1,10 @@
 let level1;
 level1init();
 
+/**
+ * various auxiliary functions are called to create following game objects
+ * a new Level instance is assigned to the level1 variable (and all initialised objects).
+ */
 async function level1init() {
     const enemies = createEnemies();
     const clouds = createClouds();
@@ -11,17 +15,32 @@ async function level1init() {
 }
 
 
+/**
+ * creates all enemies
+ * @returns - an array with all enemies
+ */
 function createEnemies() {
-    return [new Chicken(500), new Chicken(900), new Chicken(1200), new Chicken(2000), new Chicken(3500),
-    new Chicken(4500), new Chicken(5700), new Chicken(6800), new Chicken(7800), new Chicken(8800),
-    new littleChicken(1500), new littleChicken(3000), new littleChicken(4000), new littleChicken(5000),
-    new littleChicken(5500), new littleChicken(6500), new littleChicken(7200), new littleChicken(8000),
-    new littleChicken(8300), new littleChicken(8500), new littleChicken(8700), new littleChicken(9000), new littleChicken(9200),
-    new littleChicken(9500), new littleChicken(9700), new littleChicken(10000),
+    return [new Chicken(2500), new Chicken(3500), new Chicken(3900), new Chicken(4250), new Chicken(4500),
+    new Chicken(5550), new Chicken(6000), new Chicken(6500), new Chicken(7000), new Chicken(7500),
+    new Chicken(7800), new Chicken(8000), new Chicken(8250), new Chicken(8500), new Chicken(8900),
+    new Chicken(9000), new Chicken(9550), new Chicken(10000), new Chicken(11000),
+    new Chicken(12000), new Chicken(13000), new Chicken(14500), new Chicken(97500),
+    new littleChicken(4000), new littleChicken(5000), new littleChicken(6000), new littleChicken(7000),
+    new littleChicken(8000), new littleChicken(9400), new littleChicken(9800), new littleChicken(10200),
+    new littleChicken(10700), new littleChicken(10000), new littleChicken(11000), new littleChicken(11300),
+    new littleChicken(11650), new littleChicken(11700), new littleChicken(12000), new littleChicken(12250),
+    new littleChicken(12500), new littleChicken(12700),
+    new littleChicken(12800), new littleChicken(12900), new littleChicken(13000), new littleChicken(13700),
+    new littleChicken(14000), new littleChicken(14400),
     new Endboss(11500),
     ];
 }
 
+
+/**
+ * creates all Clouds
+ * @returns - an array with all clouds
+ */
 function createClouds() {
     return [
         new Cloud(200, 5), new Cloud(600, 5), new Cloud(1000, 3),
@@ -34,6 +53,11 @@ function createClouds() {
     ];
 }
 
+
+/**
+ * creates all Bottles
+ * @returns - an array with all bottles
+ */
 function createBottles() {
     return [new Bottle(500), new Bottle(1000),
     new Bottle(1800), new Bottle(3000), new Bottle(5000), new Bottle(6000),
@@ -41,6 +65,11 @@ function createBottles() {
     ];
 }
 
+
+/**
+ * creates all Coins
+ * @returns - an array with all coins
+ */
 function createCoins() {
     return [
         new Coin(450, 91), new Coin(800, 57),
@@ -62,13 +91,17 @@ function createCoins() {
         new Coin(8000, 50), new Coin(8150, 275), new Coin(8250, 245),
         new Coin(8350, 210), new Coin(8600, 131), new Coin(8700, 100),
         new Coin(8950, 285), new Coin(9050, 198), new Coin(9050, 220),
-       new Coin(9300, 72), new Coin(9375, 185), new Coin(9600, 211),
-        new Coin(9650, 198), new Coin(9700, 245), new Coin(10000, 121)
+        new Coin(9200, 72), new Coin(9375, 185), new Coin(9600, 211),
+        new Coin(9650, 198), new Coin(9700, 245), new Coin(10000, 121),
+        new Coin(10200, 198), new Coin(10700, 245), new Coin(10900, 121)
     ];
 }
 
 
-
+/**
+ * creates all background objects
+ * @returns - an array with all background objects
+ */
 function createBackgroundObjects() {
     return [
         new BackgroundObject('img/5_background/layers/air.png', -719),
