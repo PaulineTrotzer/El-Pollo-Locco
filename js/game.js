@@ -139,9 +139,9 @@ function checkLetsPlaysound() {
 function toggleAudio() {
     let audioIcon = document.getElementById('audio-icon');
     if (!audioMute) {
-        audioIcon.setAttribute('src', 'icons/audio-icons/audio-remove.svg');
+        audioIcon.setAttribute('src', 'assets/icons/audio-remove.svg');
     } else {
-        audioIcon.setAttribute('src', 'icons/audio-icons/audio-add.svg');
+        audioIcon.setAttribute('src', 'assets/icons/audio-add.svg');
     }
     audioMute = !audioMute;
 }
